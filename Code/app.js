@@ -1,6 +1,13 @@
-const audio = document.querySelector('.audio');
+const audio = document.querySelector('.current-audio .audio');
+const range = document.querySelector('.range');
+const cdThumbImg = document.querySelector('.cd-thumb img');
+const btnPlay = document.querySelector('.play');
+const play = document.querySelector('.fa-circle-play');
+const pause = document.querySelector('.fa-pause');
+const title = document.querySelector('.current-title h3');
 
-var music = {
+
+const music = {
     songs: [
         {
             id: 1,
@@ -69,54 +76,74 @@ var music = {
         })
         document.querySelector('.play-list').innerHTML = htmls.join('')
     },
-    play: function () {
-        const btnPlay = document.querySelector('.play');
-        const play = document.querySelector('.fa-circle-play');
-        const pause = document.querySelector('.fa-pause');
+    handleEvent: () => {
         let count = 0
+
+        // Click button play audio
         btnPlay.onclick = () => {
             count++
             if (count % 2 != 0) {
+                // Play audio
                 audio.play()
                 play.classList.add('playing')
                 pause.classList.remove('pause')
-            } else{
+            } else {
+                // Pause audio
                 audio.pause()
                 play.classList.remove('playing')
                 pause.classList.add('pause')
             }
         }
-    },
-    defaultSong: function () {
-        const cdThumb = document.querySelector('.cd-thumb img');
-        cdThumb.src = this.songs[0].img
 
-        const title = document.querySelector('.current-title h3');
-        title.innerHTML = this.songs[0].title
+        // CD thumb animation
+        const cdThumbAnimate = cdThumbImg.animate([
+            { transform: 'rotate(360deg)' }
+        ], {
+            duration: 10000, // 8 seconds
+            iterations: Infinity,
+        })
+        cdThumbAnimate.pause()
+        audio.onplay = () => {
+            cdThumbAnimate.play()
+        }
+        audio.onpause = () => {
+            cdThumbAnimate.pause()
+        }
 
-        audio.src = this.songs[0].src
-    },
-    currentProgress: ()=> {
-        const range = document.querySelector('.range');
+        // Current time audio
         audio.ontimeupdate = () => {
             const percent = Math.floor(audio.currentTime * 100 / audio.duration)
-            if(percent) {
+            if (percent) {
                 range.value = percent
             }
         }
+
+        // Change time audio
+        range.oninput = (e) => {
+            const changeProgress = Math.floor(audio.duration * e.target.value / 100)
+            audio.currentTime = changeProgress
+        }
+
+        // Default audio
+        cdThumbImg.src = music.songs[count].img
+        title.innerHTML = music.songs[count].title
+        audio.src = music.songs[count].src
+
+
+        // Next audio
+        
+
     },
     start: function () {
-        // Play music when click button play
-        this.play()
+        // Handle event
+        this.handleEvent()
 
-        // Default Song 
-        this.defaultSong()
 
         // Render list music
         this.render()
 
-        // Current Progress audio
-        this.currentProgress()
+
+
     }
 }
 

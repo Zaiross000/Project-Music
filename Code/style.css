@@ -72,7 +72,7 @@ button{
 
 .cd-thumb img{
     border-radius: 50%;
-    animation: spinner 8s infinite linear ;
+    /* animation: spinner 8s infinite linear reverse; */
 }
 
 /* CURRENT TITLE */
