@@ -8,6 +8,8 @@ const title = document.querySelector('.current-title h3');
 const btnPrev = document.querySelector('.btn-prev');
 const btnNext = document.querySelector('.btn-next');
 const btnRandom = document.querySelector('.btn-random');
+const updateCurrentTime= document.querySelector('.current-time');
+console.log(updateCurrentTime);
 
 const music = {
     currentIndex: 0,
@@ -62,6 +64,11 @@ const music = {
             artist: 'Laura Brehm'
         }
     ],
+    handeleNumber: (number) => {
+        const minutes = Math.floor(number / 60)
+        const seconds = Math.floor(number - (minutes * 60))
+        return `${minutes}:${seconds}`
+    },
     render: function () {
         const htmls = this.songs.map(song => {
             return `
@@ -152,6 +159,7 @@ const music = {
                 music.currentSong()
                 audio.play()
             }
+            updateCurrentTime.innerHTML = `${music.handeleNumber(audio.currentTime)} / ${music.handeleNumber(audio.duration)}`
         }
 
         // Change time audio
