@@ -1,5 +1,5 @@
 const audio = document.querySelector('.current-audio .audio');
-const range = document.querySelector('.range');
+const rangeCurrentTime = document.querySelector('.range');
 const cdThumbImg = document.querySelector('.cd-thumb img');
 const btnPlay = document.querySelector('.play');
 const play = document.querySelector('.fa-circle-play');
@@ -9,11 +9,15 @@ const btnPrev = document.querySelector('.btn-prev');
 const btnNext = document.querySelector('.btn-next');
 const btnRandom = document.querySelector('.btn-random');
 const updateCurrentTime= document.querySelector('.current-time');
-console.log(updateCurrentTime);
+const rangeVolume = document.querySelector('.volume');
+const btnVolume = document.querySelector('.btn-volume');
+const iconMute = document.querySelector('.fa-volume-xmark');
+const iconSound = document.querySelector('.fa-volume-high');
 
 const music = {
     currentIndex: 0,
     isPlaying: false,
+    isMute: false,
     songs: [
         {
             id: 1,
@@ -128,7 +132,6 @@ const music = {
             }
         }
 
-
         // Random audio
         btnRandom.onclick = () => {
             music.currentIndex = Math.floor(Math.random() * music.songs.length)
@@ -137,7 +140,7 @@ const music = {
         }
         
         // Change time audio
-        range.oninput = (e) => {
+        rangeCurrentTime.oninput = (e) => {
             const changeProgress = Math.floor(audio.duration * e.target.value / 100)
             audio.currentTime = changeProgress
         }
@@ -156,7 +159,7 @@ const music = {
         audio.ontimeupdate = () => {
             const percent = Math.floor(audio.currentTime * 100 / audio.duration)
             if (percent) {
-                range.value = percent
+                rangeCurrentTime.value = percent
             } 
             updateCurrentTime.innerHTML = `${music.handeleNumber(audio.currentTime)} / ${music.handeleNumber(audio.duration)}`
 
@@ -167,7 +170,6 @@ const music = {
                 audio.play()
             }
         }
-
 
         // Pause audio event
         audio.onpause = () => {
@@ -186,7 +188,30 @@ const music = {
         // Update time audio when the browser start load the audio
         audio.onloadedmetadata= () => {
             updateCurrentTime.innerHTML = `${music.handeleNumber(audio.currentTime)} / ${music.handeleNumber(audio.duration)}`
+        }
 
+        // Change volume audio
+        rangeVolume.oninput = (e) => {
+            audio.volume = e.target.value
+        }
+
+        rangeVolume.onmousedown = (e) => {
+            e.stopPropagation()
+        }
+
+        // Mute when click btn volume
+        btnVolume.onmousedown = () => {
+            if(music.isMute) {
+                music.isMute = false
+                audio.volume = rangeVolume.value
+                iconMute.classList.add('mute')
+                iconSound.classList.remove('mute')
+            } else {
+                music.isMute = true
+                audio.volume = 0
+                iconMute.classList.remove('mute')
+                iconSound.classList.add('mute')
+            }
         }
 
     },

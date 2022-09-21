@@ -43,11 +43,36 @@
                     <audio src="" class="audio" type="mp3"></audio>
                 </div>
                 <div class="control">
-                    <button class="btn-prev"><i class="fa-solid fa-caret-left"></i></button>
-                    <button class="play"><i class="fa-solid fa-circle-play"></i><i class="fa-solid fa-pause pause"></i> Tiếp tục phát</button>
-                    <button class="btn-next"><i class="fa-solid fa-caret-right"></i></button>
-                    <button class="btn-random"><i class="fa-solid fa-shuffle"></i></button>
+
+                    <!-- BTN VOLUME -->
+                    <button class="btn-volume">
+                        <i class="fa-solid fa-volume-high"></i>
+                        <input type="range" class="volume" name="" id="" value="100" min="0" max="1" step="0.1">
+                        <i class="fa-sharp fa-solid fa-volume-xmark mute"></i>
+                    </button>
+
+                    <!-- BTN PREV -->
+                    <button class="btn-prev">
+                        <i class="fa-solid fa-caret-left"></i>
+                    </button>
+
+                    <!-- BTN PLAY/PAUSE -->
+                    <button class="play">
+                        <i class="fa-solid fa-circle-play"></i>
+                        <i class="fa-solid fa-pause"></i> Tiếp tục phát
+                    </button>
+
+                    <!-- BTN NEXT -->
+                    <button class="btn-next">
+                        <i class="fa-solid fa-caret-right"></i>
+                    </button>
+
+                    <!-- BTN RANDOM -->
+                    <button class="btn-random">
+                        <i class="fa-solid fa-shuffle"></i>
+                    </button>
                 </div>
+
                 <div class="range-control">
                     <p class="current-time"></p>
                     <input type="range" name="" id="" class="range" value="0" min="0" max="100" step="1">

@@ -98,8 +98,9 @@ button{
 
 .btn-prev,
 .btn-next,
-.btn-random{
-    margin: 0 20px;
+.btn-random,
+.btn-volume{
+    margin: 0 8px;
     background-color: #3c255b   ;
     font-size: 24px;
     color: #DADADA;
@@ -110,17 +111,41 @@ button{
 
 .btn-prev:hover,
 .btn-next:hover,
-.btn-random:hover{
+.btn-random:hover,
+.btn-volume:hover{
     background-color: purple;
 }
 
 .fa-caret-left,
 .fa-caret-right,
-.fa-shuffle{
-    text-align: center;
+.fa-shuffle,
+.fa-volume-high,
+.fa-volume-xmark{
     width: 40px;
     height: 40px;
     line-height: 40px;
+}
+
+.btn-volume{
+    position: relative;
+}
+
+.btn-volume input[type="range"]{
+    position: absolute;
+    bottom: 200%;
+    transform: rotate(-90deg) translateY(-50%);
+    left: -40%;
+    width: 100px;
+    height: 10px;
+    display: none;
+}
+
+.btn-volume:hover input[type="range"] {
+    display: block;
+}
+
+.mute{
+    display: none;
 }
 
 .control .play{
