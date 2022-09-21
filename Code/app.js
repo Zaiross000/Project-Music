@@ -128,8 +128,6 @@ const music = {
             }
         }
 
-        // Auto next audi when the current audio end
-
 
         // Random audio
         btnRandom.onclick = () => {
@@ -137,7 +135,13 @@ const music = {
             music.currentSong()
             audio.play()
         }
-
+        
+        // Change time audio
+        range.oninput = (e) => {
+            const changeProgress = Math.floor(audio.duration * e.target.value / 100)
+            audio.currentTime = changeProgress
+        }
+        
         // CD thumb animation
         const cdThumbAnimate = cdThumbImg.animate([
             { transform: 'rotate(360deg)' }
@@ -154,19 +158,16 @@ const music = {
             if (percent) {
                 range.value = percent
             } 
+            updateCurrentTime.innerHTML = `${music.handeleNumber(audio.currentTime)} / ${music.handeleNumber(audio.duration)}`
+
+            // Auto next audi when the current audio end
             if(audio.currentTime == audio.duration) {
                 music.currentIndex++
                 music.currentSong()
                 audio.play()
             }
-            updateCurrentTime.innerHTML = `${music.handeleNumber(audio.currentTime)} / ${music.handeleNumber(audio.duration)}`
         }
 
-        // Change time audio
-        range.oninput = (e) => {
-            const changeProgress = Math.floor(audio.duration * e.target.value / 100)
-            audio.currentTime = changeProgress
-        }
 
         // Pause audio event
         audio.onpause = () => {
@@ -180,6 +181,12 @@ const music = {
             btnPlay.classList.add('playing')
             music.isPlaying = true
             cdThumbAnimate.play()
+        }
+
+        // Update time audio when the browser start load the audio
+        audio.onloadedmetadata= () => {
+            updateCurrentTime.innerHTML = `${music.handeleNumber(audio.currentTime)} / ${music.handeleNumber(audio.duration)}`
+
         }
 
     },
