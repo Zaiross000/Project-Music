@@ -8,11 +8,12 @@ const title = document.querySelector('.current-title h3');
 const btnPrev = document.querySelector('.btn-prev');
 const btnNext = document.querySelector('.btn-next');
 const btnRandom = document.querySelector('.btn-random');
-const updateCurrentTime= document.querySelector('.current-time');
+const updateCurrentTime = document.querySelector('.current-time');
 const rangeVolume = document.querySelector('.volume');
 const btnVolume = document.querySelector('.btn-volume');
 const iconMute = document.querySelector('.fa-volume-xmark');
 const iconSound = document.querySelector('.fa-volume-high');
+
 
 const music = {
     currentIndex: 0,
@@ -93,6 +94,7 @@ const music = {
     },
     handleEvent: () => {
         let count = 0
+
         // Click button play audio
         btnPlay.onclick = () => {
             if (music.isPlaying) {
@@ -138,13 +140,13 @@ const music = {
             music.currentSong()
             audio.play()
         }
-        
+
         // Change time audio
         rangeCurrentTime.oninput = (e) => {
             const changeProgress = Math.floor(audio.duration * e.target.value / 100)
             audio.currentTime = changeProgress
         }
-        
+
         // CD thumb animation
         const cdThumbAnimate = cdThumbImg.animate([
             { transform: 'rotate(360deg)' }
@@ -160,11 +162,11 @@ const music = {
             const percent = Math.floor(audio.currentTime * 100 / audio.duration)
             if (percent) {
                 rangeCurrentTime.value = percent
-            } 
+            }
             updateCurrentTime.innerHTML = `${music.handeleNumber(audio.currentTime)} / ${music.handeleNumber(audio.duration)}`
 
             // Auto next audi when the current audio end
-            if(audio.currentTime == audio.duration) {
+            if (audio.currentTime == audio.duration) {
                 music.currentIndex++
                 music.currentSong()
                 audio.play()
@@ -186,7 +188,7 @@ const music = {
         }
 
         // Update time audio when the browser start load the audio
-        audio.onloadedmetadata= () => {
+        audio.onloadedmetadata = () => {
             updateCurrentTime.innerHTML = `${music.handeleNumber(audio.currentTime)} / ${music.handeleNumber(audio.duration)}`
         }
 
@@ -195,13 +197,14 @@ const music = {
             audio.volume = e.target.value
         }
 
+        // Ttop propagation when click range volume
         rangeVolume.onmousedown = (e) => {
             e.stopPropagation()
         }
 
         // Mute when click btn volume
         btnVolume.onmousedown = () => {
-            if(music.isMute) {
+            if (music.isMute) {
                 music.isMute = false
                 audio.volume = rangeVolume.value
                 iconMute.classList.add('mute')
@@ -214,11 +217,23 @@ const music = {
             }
         }
 
+
     },
     currentSong: () => {
         cdThumbImg.src = music.songs[music.currentIndex].img
         title.innerHTML = music.songs[music.currentIndex].title
         audio.src = music.songs[music.currentIndex].src
+    },
+    clickList: () => {
+        const audioList = document.querySelectorAll('.music-group');
+        audioList.forEach((item, index) => {
+            item.onclick = () => {
+                music.currentIndex = index
+                music.currentSong()
+                audio.play()
+                console.log('2');
+            }
+        })
     },
     start: function () {
         // load audio        
@@ -230,8 +245,12 @@ const music = {
         // Render list music
         this.render()
 
+        this.clickList()
     }
 }
-
 music.start()
+
+
+
+
 
