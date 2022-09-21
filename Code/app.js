@@ -7,8 +7,11 @@ const pause = document.querySelector('.fa-pause');
 const title = document.querySelector('.current-title h3');
 const btnPrev = document.querySelector('.btn-prev');
 const btnNext = document.querySelector('.btn-next');
+const btnRandom = document.querySelector('.btn-random');
 
 const music = {
+    currentIndex: 0,
+    isPlaying: false,
     songs: [
         {
             id: 1,
@@ -79,34 +82,53 @@ const music = {
     },
     handleEvent: () => {
         let count = 0
-
         // Click button play audio
         btnPlay.onclick = () => {
-            count++
-            changeIcon(count)
-        }
-
-        // Change icon button play
-        function changeIcon(count) {
-            if (count % 2 != 0) {
-                // Play audio
-                playMusic()
+            if (music.isPlaying) {
+                audio.pause()
             } else {
-                // Pause audio
-                pauseMusic()
+                audio.play()
             }
         }
 
-        function playMusic() {
-            audio.play()
-            play.classList.add('playing')
-            pause.classList.remove('pause')
+        // Prev audio
+        btnPrev.onclick = () => {
+            music.currentIndex--
+            if (music.currentIndex < 0) {
+                music.currentIndex = music.songs.length
+                music.currentSong()
+                audio.play()
+                console.log(music.currentIndex);
+
+            } else {
+                music.currentSong()
+                audio.play()
+            }
         }
 
-        function pauseMusic() {
-            audio.pause()
-            play.classList.remove('playing')
-            pause.classList.add('pause')
+        // Next audio
+        btnNext.onclick = () => {
+            music.currentIndex++
+            if (music.currentIndex >= music.songs.length) {
+                music.currentIndex = 0
+                music.currentSong()
+                audio.play()
+            } else {
+                cdThumbAnimate.play()
+                music.currentSong()
+                audio.play()
+
+            }
+        }
+
+        // Auto next audi when the current audio end
+
+
+        // Random audio
+        btnRandom.onclick = () => {
+            music.currentIndex = Math.floor(Math.random() * music.songs.length)
+            music.currentSong()
+            audio.play()
         }
 
         // CD thumb animation
@@ -116,19 +138,19 @@ const music = {
             duration: 10000, // 8 seconds
             iterations: Infinity,
         })
+        // Default pause
         cdThumbAnimate.pause()
-        audio.onplay = () => {
-            cdThumbAnimate.play()
-        }
-        audio.onpause = () => {
-            cdThumbAnimate.pause()
-        }
 
         // Current time audio
         audio.ontimeupdate = () => {
             const percent = Math.floor(audio.currentTime * 100 / audio.duration)
             if (percent) {
                 range.value = percent
+            } 
+            if(audio.currentTime == audio.duration) {
+                music.currentIndex++
+                music.currentSong()
+                audio.play()
             }
         }
 
@@ -138,62 +160,38 @@ const music = {
             audio.currentTime = changeProgress
         }
 
-        // Default audio
-        cdThumbImg.src = music.songs[count].img
-        title.innerHTML = music.songs[count].title
-        audio.src = music.songs[count].src
-
-        // Prev audio
-        btnPrev.onclick = () => {
-            if (count > 0) {
-                count--
-                cdThumbImg.src = music.songs[count].img
-                title.innerHTML = music.songs[count].title
-                audio.src = music.songs[count].src
-                playMusic()
-            } else {
-                count = music.songs.length - 1
-                console.log(count);
-                cdThumbImg.src = music.songs[count].img
-                title.innerHTML = music.songs[count].title
-                audio.src = music.songs[count].src
-                playMusic()
-            }
+        // Pause audio event
+        audio.onpause = () => {
+            btnPlay.classList.remove('playing')
+            music.isPlaying = false
+            cdThumbAnimate.pause()
         }
 
-        // Next audio
-        btnNext.onclick = () => {
-            if (count >= music.songs.length - 1) {
-                count = 0
-                cdThumbImg.src = music.songs[count].img
-                title.innerHTML = music.songs[count].title
-                audio.src = music.songs[count].src
-                playMusic()
-            } else {
-                count++
-                cdThumbImg.src = music.songs[count].img
-                title.innerHTML = music.songs[count].title
-                audio.src = music.songs[count].src
-                playMusic()
-            }
+        // Play audio event
+        audio.onplay = () => {
+            btnPlay.classList.add('playing')
+            music.isPlaying = true
+            cdThumbAnimate.play()
         }
 
     },
+    currentSong: () => {
+        cdThumbImg.src = music.songs[music.currentIndex].img
+        title.innerHTML = music.songs[music.currentIndex].title
+        audio.src = music.songs[music.currentIndex].src
+    },
     start: function () {
+        // load audio        
+        this.currentSong()
+
         // Handle event
         this.handleEvent()
 
-
         // Render list music
         this.render()
-
-
 
     }
 }
 
 music.start()
-
-
-
 

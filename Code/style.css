@@ -81,6 +81,8 @@ button{
     text-align: center;
     font-size: 30px;
     margin: 20px 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 /* CURRENT AUDIO */
@@ -95,15 +97,30 @@ button{
 }
 
 .btn-prev,
-.btn-next{
-    width: 40px;
-    height: 40px;
+.btn-next,
+.btn-random{
     margin: 0 20px;
-    background-color: #7200a1;
-    padding: 8px 16px;
-    border-radius: 50%;
+    background-color: #3c255b   ;
     font-size: 24px;
     color: #DADADA;
+    border-radius: 50%;
+    transition: 0.7s;
+    outline: none;
+}
+
+.btn-prev:hover,
+.btn-next:hover,
+.btn-random:hover{
+    background-color: purple;
+}
+
+.fa-caret-left,
+.fa-caret-right,
+.fa-shuffle{
+    text-align: center;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
 }
 
 .control .play{
@@ -114,6 +131,18 @@ button{
     height: 100%;
     border-radius: 75px;
     padding: 8px 16px;
+}
+
+.control .play.playing .fa-circle-play{
+    display: none;
+}
+
+.control .play.playing .fa-pause {
+    display: inline-block;
+}
+
+.control .play .fa-pause {
+    display: none;
 }
 
 .range-control{
@@ -133,7 +162,7 @@ button{
 }
 
 .playing{
-    display: none;
+
     transition: 0.5s;
 }
 
@@ -174,6 +203,12 @@ button{
     font-size: 14px;
     flex-direction: column;
     justify-content: space-between;
+
+}
+
+.wrapper-music .title p{
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .music-group img{
@@ -184,6 +219,8 @@ button{
 
 .music-group > p {
     font-size: 14px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 } 
 
 .active{
