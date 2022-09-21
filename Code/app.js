@@ -5,7 +5,8 @@ const btnPlay = document.querySelector('.play');
 const play = document.querySelector('.fa-circle-play');
 const pause = document.querySelector('.fa-pause');
 const title = document.querySelector('.current-title h3');
-
+const btnPrev = document.querySelector('.btn-prev');
+const btnNext = document.querySelector('.btn-next');
 
 const music = {
     songs: [
@@ -82,17 +83,30 @@ const music = {
         // Click button play audio
         btnPlay.onclick = () => {
             count++
+            changeIcon(count)
+        }
+
+        // Change icon button play
+        function changeIcon(count) {
             if (count % 2 != 0) {
                 // Play audio
-                audio.play()
-                play.classList.add('playing')
-                pause.classList.remove('pause')
+                playMusic()
             } else {
                 // Pause audio
-                audio.pause()
-                play.classList.remove('playing')
-                pause.classList.add('pause')
+                pauseMusic()
             }
+        }
+
+        function playMusic() {
+            audio.play()
+            play.classList.add('playing')
+            pause.classList.remove('pause')
+        }
+
+        function pauseMusic() {
+            audio.pause()
+            play.classList.remove('playing')
+            pause.classList.add('pause')
         }
 
         // CD thumb animation
@@ -129,9 +143,40 @@ const music = {
         title.innerHTML = music.songs[count].title
         audio.src = music.songs[count].src
 
+        // Prev audio
+        btnPrev.onclick = () => {
+            if (count > 0) {
+                count--
+                cdThumbImg.src = music.songs[count].img
+                title.innerHTML = music.songs[count].title
+                audio.src = music.songs[count].src
+                playMusic()
+            } else {
+                count = music.songs.length - 1
+                console.log(count);
+                cdThumbImg.src = music.songs[count].img
+                title.innerHTML = music.songs[count].title
+                audio.src = music.songs[count].src
+                playMusic()
+            }
+        }
 
         // Next audio
-        
+        btnNext.onclick = () => {
+            if (count >= music.songs.length - 1) {
+                count = 0
+                cdThumbImg.src = music.songs[count].img
+                title.innerHTML = music.songs[count].title
+                audio.src = music.songs[count].src
+                playMusic()
+            } else {
+                count++
+                cdThumbImg.src = music.songs[count].img
+                title.innerHTML = music.songs[count].title
+                audio.src = music.songs[count].src
+                playMusic()
+            }
+        }
 
     },
     start: function () {
