@@ -151,7 +151,7 @@ const music = {
         const cdThumbAnimate = cdThumbImg.animate([
             { transform: 'rotate(360deg)' }
         ], {
-            duration: 10000, // 8 seconds
+            duration: 10000, // 10 seconds
             iterations: Infinity,
         })
         // Default pause
@@ -197,7 +197,7 @@ const music = {
             audio.volume = e.target.value
         }
 
-        // Ttop propagation when click range volume
+        // Stop propagation when click range volume
         rangeVolume.onmousedown = (e) => {
             e.stopPropagation()
         }
@@ -231,20 +231,21 @@ const music = {
                 music.currentIndex = index
                 music.currentSong()
                 audio.play()
-                console.log('2');
             }
         })
     },
     start: function () {
-        // load audio        
-        this.currentSong()
+        // Render list music
+        this.render()
 
         // Handle event
         this.handleEvent()
 
-        // Render list music
-        this.render()
+        // load audio        
+        this.currentSong()
 
+
+        // Play audio when click list item audio
         this.clickList()
     }
 }
