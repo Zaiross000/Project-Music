@@ -1,0 +1,18 @@
+@import 'reset';
+@import 'variable';
+@import 'header';
+
+img{
+    width: 100%;
+    height: 100%;
+}
+
+button{
+    cursor: pointer;
+}
+
+.wrapper{
+    width: 1200px;
+    margin: 0 auto;
+    max-width: $width-100;
+}

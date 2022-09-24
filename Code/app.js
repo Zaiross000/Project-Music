@@ -106,14 +106,15 @@ const music = {
 
         // Prev audio
         btnPrev.onclick = () => {
-            music.currentIndex--
+            // console.log(music.currentIndex);
             if (music.currentIndex < 0) {
-                music.currentIndex = music.songs.length
+                music.currentIndex = music.songs.length - 1
                 music.currentSong()
                 audio.play()
                 console.log(music.currentIndex);
 
             } else {
+                music.currentIndex-- 
                 music.currentSong()
                 audio.play()
             }
@@ -220,9 +221,19 @@ const music = {
 
     },
     currentSong: () => {
-        cdThumbImg.src = music.songs[music.currentIndex].img
-        title.innerHTML = music.songs[music.currentIndex].title
-        audio.src = music.songs[music.currentIndex].src
+        // console.log(music.songs[music.currentIndex])
+        if(music.currentIndex < 0) {
+            music.currentIndex = music.songs.length - 1
+            console.log(music.songs[music.currentIndex].img);
+            cdThumbImg.src = music.songs[music.currentIndex].img
+            title.innerHTML = music.songs[music.currentIndex].title
+            audio.src = music.songs[music.currentIndex].src
+        }
+        else {
+            cdThumbImg.src = music.songs[music.currentIndex].img
+            title.innerHTML = music.songs[music.currentIndex].title
+            audio.src = music.songs[music.currentIndex].src
+        }
     },
     clickList: () => {
         const audioList = document.querySelectorAll('.music-group');
